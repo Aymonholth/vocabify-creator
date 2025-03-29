@@ -1,4 +1,3 @@
-
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { FlashcardWord, FlashcardSettings, VoiceOption, ExportFormat } from '@/types/flashcard';
 import { apiService } from '@/services/apiService';
@@ -35,7 +34,6 @@ export const FlashcardProvider: React.FC<{ children: React.ReactNode }> = ({ chi
   const [availableVoices, setAvailableVoices] = useState<VoiceOption[]>([]);
   const { toast } = useToast();
 
-  // Fetch available languages on initial load
   useEffect(() => {
     const fetchLanguages = async () => {
       try {
@@ -54,14 +52,12 @@ export const FlashcardProvider: React.FC<{ children: React.ReactNode }> = ({ chi
     fetchLanguages();
   }, [toast]);
 
-  // Fetch available voices when target language changes
   useEffect(() => {
     const fetchVoices = async () => {
       try {
         const voices = await apiService.getAvailableVoices(settings.targetLanguage);
         setAvailableVoices(voices);
         
-        // If we have voices and none is selected, select the first one
         if (voices.length > 0 && !settings.selectedVoice) {
           setSettings(prev => ({
             ...prev,
@@ -109,10 +105,8 @@ export const FlashcardProvider: React.FC<{ children: React.ReactNode }> = ({ chi
       
       setWords(prev => [...prev, ...pendingWords]);
       
-      // Process each word sequentially
       for (const word of pendingWords) {
         try {
-          // Update the word's status to processing
           setWords(prev => 
             prev.map(w => 
               w.id === word.id 
@@ -121,7 +115,6 @@ export const FlashcardProvider: React.FC<{ children: React.ReactNode }> = ({ chi
             )
           );
           
-          // Process the word
           await apiService.processWord(
             word.sourceWord, 
             settings, 
@@ -138,7 +131,6 @@ export const FlashcardProvider: React.FC<{ children: React.ReactNode }> = ({ chi
         } catch (error) {
           console.error(`Error processing word ${word.sourceWord}:`, error);
           
-          // Update the word's status to error
           setWords(prev => 
             prev.map(w => 
               w.id === word.id 

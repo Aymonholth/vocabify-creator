@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
@@ -32,20 +31,15 @@ const FlashcardApp: React.FC = () => {
             <CardHeader>
               <CardTitle>Language Settings</CardTitle>
               <CardDescription>
-                Configure your source and target languages
+                Configure your target language
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
-              <div className="grid grid-cols-2 gap-4">
-                <LanguageSelector 
-                  type="source" 
-                  label="Source Language" 
-                />
-                <LanguageSelector 
-                  type="target" 
-                  label="Target Language" 
-                />
+              <div className="text-sm text-muted-foreground">
+                Source Language: English (fixed)
               </div>
+              
+              <LanguageSelector />
               
               <Separator />
               

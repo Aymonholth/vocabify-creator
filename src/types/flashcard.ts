@@ -1,4 +1,3 @@
-
 export interface FlashcardWord {
   id: string;
   sourceWord: string;
@@ -17,7 +16,7 @@ export interface FlashcardWord {
 }
 
 export interface FlashcardSettings {
-  sourceLanguage: string;
+  sourceLanguage: 'en';
   targetLanguage: string;
   translationDirection: 'sourceToTarget' | 'targetToSource';
   toneInstructions: string;

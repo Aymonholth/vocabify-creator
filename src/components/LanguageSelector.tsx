@@ -10,42 +10,31 @@ import {
 import { Label } from '@/components/ui/label';
 import { useFlashcards } from '@/contexts/FlashcardContext';
 
-interface LanguageSelectorProps {
-  type: 'source' | 'target';
-  label: string;
-}
-
-const LanguageSelector: React.FC<LanguageSelectorProps> = ({ type, label }) => {
+const LanguageSelector: React.FC = () => {
   const { settings, updateSettings, availableLanguages } = useFlashcards();
   
   const handleChange = (value: string) => {
-    if (type === 'source') {
-      updateSettings({ sourceLanguage: value });
-    } else {
-      updateSettings({ targetLanguage: value });
-    }
+    updateSettings({ targetLanguage: value });
   };
-  
-  const currentValue = type === 'source' 
-    ? settings.sourceLanguage 
-    : settings.targetLanguage;
   
   return (
     <div className="space-y-2">
-      <Label htmlFor={`${type}-language`}>{label}</Label>
+      <Label htmlFor="target-language">Target Language</Label>
       <Select 
-        value={currentValue} 
+        value={settings.targetLanguage} 
         onValueChange={handleChange}
       >
-        <SelectTrigger id={`${type}-language`} className="w-full">
-          <SelectValue placeholder="Select language" />
+        <SelectTrigger id="target-language" className="w-full">
+          <SelectValue placeholder="Select target language" />
         </SelectTrigger>
         <SelectContent>
-          {availableLanguages.map(lang => (
-            <SelectItem key={lang.code} value={lang.code}>
-              {lang.name}
-            </SelectItem>
-          ))}
+          {availableLanguages
+            .filter(lang => lang.code !== 'en') // Exclude English from target languages
+            .map(lang => (
+              <SelectItem key={lang.code} value={lang.code}>
+                {lang.name}
+              </SelectItem>
+            ))}
         </SelectContent>
       </Select>
     </div>
